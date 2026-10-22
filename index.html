@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Pintar Tauhid Tahun 4</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .emerald-header { background-color: #064e3b; }
+        .emerald-badge { background-color: #065f46; }
+        .tab-active { border-bottom: 3px solid #ffffff; font-weight: 600; color: #ffffff; }
+        .tab-inactive { color: #a7f3d0; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { backface-visibility: hidden; }
+        .flip-card-back { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <header class="emerald-header text-white px-4 pt-6 pb-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-800 p-3 rounded-2xl shadow-inner border border-emerald-700">
+                    <i class="fa-solid fa-book-quran text-2xl text-emerald-200"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">E-Pintar Tauhid Tahun 4</h1>
+                    <p class="text-xs sm:text-sm text-emerald-200">Panduan Ulang Kaji & Kuiz Silibus JAIS</p>
+                </div>
+            </div>
+            <!-- Logo link online.education1.my -->
+            <a href="https://online.education1.my" target="_blank" rel="noopener noreferrer" class="bg-emerald-900/80 hover:bg-emerald-900 border border-emerald-600/50 px-3.5 py-1.5 rounded-full text-xs font-medium text-emerald-100 flex items-center gap-2 transition-all shadow-sm">
+                <i class="fa-solid fa-graduation-cap text-emerald-300"></i>
+                <span>online.education1.my</span>
+            </a>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="max-w-4xl mx-auto flex justify-center sm:justify-start space-x-6 sm:space-x-8 mt-4 border-t border-emerald-800/60 pt-3 text-sm">
+            <button onclick="switchTab('nota')" id="tab-nota-btn" class="pb-1 tab-active flex items-center gap-2 transition-colors">
+                <i class="fa-solid fa-book-open"></i> Nota Terperinci
+            </button>
+            <button onclick="switchTab('kad')" id="tab-kad-btn" class="pb-1 tab-inactive flex items-center gap-2 hover:text-white transition-colors">
+                <i class="fa-solid fa-clone"></i> Kad Imbasan
+            </button>
+            <button onclick="switchTab('kuiz')" id="tab-kuiz-btn" class="pb-1 tab-inactive flex items-center gap-2 hover:text-white transition-colors">
+                <i class="fa-solid fa-circle-question"></i> Ujian Kuiz
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-6">
+
+        <!-- ================= TAB 1: NOTA TERPERINCI ================= -->
+        <section id="view-nota" class="space-y-6">
+            <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col items-center gap-2">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Mod Pembelajaran</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Koleksi Nota Poket Tauhid</h2>
+                <p class="text-slate-600 text-sm max-w-xl">Nota terperinci dan huraian berpandukan silibus rasmi SRA/KAFA JAIS Tahun 4.</p>
+            </div>
+
+            <!-- Pelajaran Accordions with manual open button -->
+            <div id="notes-container" class="space-y-4">
+                <!-- Javascript will inject notes here -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: KAD IMBASAN ================= -->
+        <section id="view-kad" class="hidden space-y-6">
+            <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Mod Hafalan & Ingatan</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">Kad Imbasan Interaktif (30 Soalan)</h2>
+                    <p class="text-slate-600 text-sm mt-1">Uji ingatan anda dengan 10 kad imbasan khas bagi setiap pelajaran. Tekan kad untuk melihat jawapan!</p>
+                </div>
+                <!-- Pelajaran Selector for Flashcards -->
+                <div class="w-full sm:w-auto">
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Pilih Pelajaran:</label>
+                    <select id="flashcard-pelajaran-select" onchange="changeFlashcardPel(this.value)" class="bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm rounded-xl px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none w-full sm:w-64 font-medium">
+                        <option value="1">Pelajaran 1: Sifat Allah (10 Kad)</option>
+                        <option value="2">Pelajaran 2: Sifat Rasul (10 Kad)</option>
+                        <option value="3">Pelajaran 3: Hari Kiamat (10 Kad)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Flashcard Display Area -->
+            <div class="flex flex-col items-center max-w-xl mx-auto space-y-4">
+                <div class="flex justify-between items-center w-full px-2 text-sm text-slate-500 font-medium">
+                    <span id="flashcard-counter" class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-semibold">Kad 1 daripada 10</span>
+                    <span class="text-emerald-700 text-xs flex items-center gap-1"><i class="fa-solid fa-hand-pointer"></i> Tekan Kad untuk Jawapan</span>
+                </div>
+
+                <!-- Card Element -->
+                <div id="flashcard-container" onclick="flipFlashcard()" class="flip-card w-full h-72 sm:h-80 cursor-pointer select-none">
+                    <div class="flip-card-inner relative w-full h-full rounded-2xl card-shadow bg-gradient-to-br from-emerald-800 to-emerald-950 text-white p-6 sm:p-8 flex flex-col justify-between border border-emerald-700">
+                        <!-- Front Content -->
+                        <div class="flip-card-front absolute inset-0 p-6 sm:p-8 flex flex-col justify-between">
+                            <div class="flex justify-between items-center">
+                                <span id="fc-pel-badge" class="bg-emerald-700/80 text-emerald-200 text-xs px-3 py-1 rounded-full font-medium">Pelajaran 1</span>
+                                <span class="text-emerald-300 text-xs flex items-center gap-1.5"><i class="fa-solid fa-rotate"></i> Klik untuk pusing</span>
+                            </div>
+                            <div class="text-center my-auto">
+                                <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider block mb-2">Soalan</span>
+                                <h3 id="fc-question" class="text-lg sm:text-xl font-semibold leading-relaxed">Apakah pengertian...</h3>
+                            </div>
+                            <div class="text-center text-xs text-emerald-300/80">Bahagian: <span id="fc-bahagian" class="font-medium text-white">Soalan</span></div>
+                        </div>
+
+                        <!-- Back Content -->
+                        <div class="flip-card-back absolute inset-0 p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-slate-900 to-emerald-950">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-amber-600/80 text-amber-100 text-xs px-3 py-1 rounded-full font-medium">Jawapan & Fakta</span>
+                                <span class="text-emerald-300 text-xs flex items-center gap-1.5"><i class="fa-solid fa-rotate"></i> Klik untuk pusing</span>
+                            </div>
+                            <div class="text-center my-auto">
+                                <span class="text-amber-400 text-xs font-bold uppercase tracking-wider block mb-2">Jawapan Sebenar</span>
+                                <p id="fc-answer" class="text-base sm:text-lg font-medium leading-relaxed text-amber-100">Jawapan kad di sini...</p>
+                            </div>
+                            <div class="text-center text-xs text-slate-400">Silibus JAIS Tahun 4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flashcard Controls -->
+                <div class="flex items-center justify-between w-full pt-2">
+                    <button onclick="prevFlashcard()" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-sm transition-all">
+                        <i class="fa-solid fa-arrow-left"></i> Kad Sebelumnya
+                    </button>
+                    <button onclick="resetFlashcards()" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-rotate-right"></i> Ulang Semula
+                    </button>
+                    <button onclick="nextFlashcard()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-sm transition-all">
+                        Kad Seterusnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: UJIAN KUIZ ================= -->
+        <section id="view-kuiz" class="hidden space-y-6">
+            <!-- Quiz Menu / Selection Screen -->
+            <div id="quiz-menu" class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 text-center sm:text-left">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Mod Pentaksiran</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">Kuasai Tauhid Sekolah Rendah Agama (SRA / KAFA)</h2>
+                    <p class="text-slate-600 text-sm mt-1">Pilih tajuk pelajaran di bawah untuk memulakan kuiz interaktif berserta maklum balas huraian fakta.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 space-y-4">
+                    <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2 uppercase tracking-wider">
+                        <i class="fa-solid fa-list-check text-emerald-600"></i> Sila Pilih Tajuk Pelajaran:
+                    </h3>
+
+                    <div class="grid grid-cols-1 gap-3">
+                        <!-- Mixed option -->
+                        <button onclick="startQuiz('mixed')" class="w-full text-left bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 p-4 rounded-xl flex items-center justify-between group transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-emerald-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-shuffle"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 group-hover:text-emerald-800">Semua Tajuk Campuran (30 Soalan)</h4>
+                                    <p class="text-xs text-slate-500">Soalan merangkumi Pelajaran 1, 2 dan 3 silibus Tauhid Tahun 4</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-emerald-600 font-bold group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <!-- Pelajaran 1 -->
+                        <button onclick="startQuiz(1)" class="w-full text-left bg-white hover:bg-emerald-50/50 border border-slate-200 p-4 rounded-xl flex items-center justify-between group transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-emerald-700 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">1</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 group-hover:text-emerald-800">Pelajaran 1: Sifat Wajib, Mustahil & Harus Bagi Allah (30 Soalan)</h4>
+                                    <p class="text-xs text-slate-500">Merangkumi Unit 1.1 hingga Unit 1.7 dan Unit 2 Sifat Harus Allah</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <!-- Pelajaran 2 -->
+                        <button onclick="startQuiz(2)" class="w-full text-left bg-white hover:bg-emerald-50/50 border border-slate-200 p-4 rounded-xl flex items-center justify-between group transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-emerald-700 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">2</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 group-hover:text-emerald-800">Pelajaran 2: Sifat Wajib, Mustahil & Harus Bagi Rasul (30 Soalan)</h4>
+                                    <p class="text-xs text-slate-500">Merangkumi Unit 1 (Wajib), Unit 2 (Mustahil) & Unit 3 (Harus)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <!-- Pelajaran 3 -->
+                        <button onclick="startQuiz(3)" class="w-full text-left bg-white hover:bg-emerald-50/50 border border-slate-200 p-4 rounded-xl flex items-center justify-between group transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-emerald-700 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">3</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 group-hover:text-emerald-800">Pelajaran 3: Beriman Kepada Hari Kiamat (30 Soalan)</h4>
+                                    <p class="text-xs text-slate-500">Merangkumi Unit 1 (Pengertian & Dalil) & Unit 2 (Nama-nama Kiamat)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Quiz Screen -->
+            <div id="quiz-active" class="hidden space-y-6">
+                <!-- Quiz Progress Bar Header & Topic Switcher Buttons -->
+                <div class="bg-white p-4 rounded-2xl card-shadow border border-slate-100 space-y-3">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                        <div>
+                            <span id="quiz-active-title" class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full">Pelajaran 1</span>
+                            <h3 id="quiz-question-counter" class="text-base font-bold text-slate-900 mt-1">Soalan 1 daripada 30</h3>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                            <div class="text-xs font-semibold text-slate-600">Skor Semasa: <span id="current-score-display" class="text-emerald-700 font-bold text-sm">0</span> / 30</div>
+                        </div>
+                    </div>
+
+                    <!-- Button pilihan tajuk semasa menjawab soalan kuiz -->
+                    <div class="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-semibold text-slate-500 mr-1"><i class="fa-solid fa-exchange-alt text-emerald-600"></i> Tukar Tajuk:</span>
+                        <button onclick="startQuiz('mixed')" class="bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-medium transition-all">Campuran</button>
+                        <button onclick="startQuiz(1)" class="bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-medium transition-all">Pelajaran 1</button>
+                        <button onclick="startQuiz(2)" class="bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-medium transition-all">Pelajaran 2</button>
+                        <button onclick="startQuiz(3)" class="bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-medium transition-all">Pelajaran 3</button>
+                    </div>
+                </div>
+
+                <!-- Question Box -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl card-shadow border border-slate-100 space-y-6">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h4 id="quiz-question-text" class="text-lg sm:text-xl font-semibold text-slate-900 leading-relaxed">Soalan kuiz akan dipaparkan di sini...</h4>
+                    </div>
+
+                    <!-- Options Container -->
+                    <div id="quiz-options-container" class="space-y-3">
+                        <!-- Options injected by JS -->
+                    </div>
+
+                    <!-- Explanation Box (Initially Hidden) -->
+                    <div id="quiz-explanation-box" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-2">
+                        <div class="flex items-center gap-2 font-bold text-emerald-900 text-sm">
+                            <i id="explanation-icon" class="fa-solid fa-circle-check text-emerald-600"></i>
+                            <span id="explanation-title">Penerangan Fakta</span>
+                        </div>
+                        <p id="quiz-explanation-text" class="text-xs sm:text-sm text-emerald-800 leading-relaxed">Huraian fakta akan dipaparkan di sini...</p>
+                    </div>
+                </div>
+
+                <!-- Quiz Navigation Controls -->
+                <div class="flex items-center justify-between">
+                    <button onclick="prevQuizQuestion()" id="btn-prev-question" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-sm transition-all">
+                        <i class="fa-solid fa-arrow-left"></i> Soalan Sebelumnya
+                    </button>
+                    <button onclick="nextQuizQuestion()" id="btn-next-question" class="bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-sm transition-all">
+                        Soalan Seterusnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result Screen -->
+            <div id="quiz-result" class="hidden bg-white p-6 sm:p-10 rounded-2xl card-shadow border border-slate-100 text-center space-y-6 max-w-xl mx-auto">
+                <div class="w-20 h-20 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900">Tahniah! Kuiz Selesai</h3>
+                    <p class="text-slate-600 text-sm mt-1">Anda telah menjawab semua soalan pentaksiran silibus JAIS.</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto bg-slate-50 p-4 rounded-xl border border-slate-200 text-left">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Jumlah Markah</span>
+                        <span id="res-score" class="text-xl font-bold text-emerald-700">25 / 30</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Peratusan</span>
+                        <span id="res-percent" class="text-xl font-bold text-emerald-700">83.3%</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Betul</span>
+                        <span id="res-correct" class="text-lg font-bold text-emerald-600">25</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Salah</span>
+                        <span id="res-incorrect" class="text-lg font-bold text-rose-600">5</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                    <button onclick="restartCurrentQuiz()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Cuba Lagi
+                    </button>
+                    <button onclick="backToQuizMenu()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-list"></i> Pilih Tajuk Lain
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 text-center py-4 text-xs text-slate-500 mt-auto">
+        <p>E-Pintar Tauhid Tahun 4 • Dikemaskini mengikut silibus rasmi JAIS • Sokongan pembelajaran SRA/KAFA</p>
+    </footer>
+
+    <script>
+        // --- DATA SILIBUS JAIS TAHUN 4 TAUHID (DENGAN PENERANGAN LANJUT) ---
+        const notesData = [
+            {
+                pelajaran: "Pelajaran 1: Sifat Wajib, Mustahil & Harus Bagi Allah",
+                badge: "Pelajaran 1",
+                units: [
+                    {
+                        title: "Unit 1: Pengenalan Sifat Wajib & Mustahil Bagi Allah",
+                        desc: "Mengenal 20 sifat wajib yang menunjukkan kesempurnaan mutlak Allah SWT dan 20 sifat mustahil yang berlawanan dengan kesempurnaan-Nya.",
+                        fakta: "Hukum mengetahui dan mempercayai sifat 20 bagi Allah SWT adalah wajib ain bagi setiap mukallaf. Sifat-sifat ini membuktikan bahawa Allah SWT Maha Sempurna dan tidak bertindak mengikut sifat kekurangan makhluk."
+                    },
+                    {
+                        title: "Unit 1.1: Qudrat (قُدْرَةً) — Berkuasa",
+                        desc: "Wajib sifat Qudrat (Maha Berkuasa), mustahil sifat `Ajzun (Maha Lemah).",
+                        fakta: "Qudrat bermaksud Allah SWT Maha Berkuasa atas segala sesuatu yang harus (mumkin). Allah SWT tidak memerlukan bantuan sesiapa pun. Mustahil bagi Allah SWT bersifat ‘ajzun (lemah). Dalil: Surah al-Baqarah, ayat 20."
+                    },
+                    {
+                        title: "Unit 1.2: Iradah (إِرَادَةً) — Berkehendak",
+                        desc: "Wajib sifat Iradah (Berkehendak), mustahil sifat Karahah (Terpaksa).",
+                        fakta: "Iradah bermaksud Allah SWT Maha Berkehendak dan menentukan segala perkara yang harus berlaku menurut kehendak-Nya. Allah SWT tidak dipaksa oleh sesiapa pun. Mustahil bagi Allah SWT bersifat karahah (terpaksa). Dalil: Surah al-Buruj, ayat 16."
+                    },
+                    {
+                        title: "Unit 1.3: Ilmun (عِلْمًا) — Mengetahui",
+                        desc: "Wajib sifat Ilmun (Maha Mengetahui), mustahil sifat Jahalan (Bodoh/Tidak Mengetahui).",
+                        fakta: "‘Ilmun bermaksud Allah SWT Maha Mengetahui segala sesuatu, sama ada yang nyata atau tersembunyi, termasuk perkara ghaib dan segala yang tersimpan dalam hati manusia. Mustahil bagi Allah SWT bersifat jahlun (jahil atau tidak mengetahui). Dalil: Surah Fatir, ayat 38."
+                    },
+                    {
+                        title: "Unit 1.4: Hayat (حَيَاةً) — Hidup",
+                        desc: "Wajib sifat Hayat (Maha Hidup), mustahil sifat Mautan (Mati).",
+                        fakta: "Hayat bermaksud Allah SWT Maha Hidup dengan kehidupan yang sempurna, tidak bermula dan tidak berakhir. Kehidupan Allah SWT tidak menyerupai kehidupan makhluk. Mustahil bagi Allah SWT bersifat mautun (mati). Dalil: Surah Ali ‘Imran, ayat 2."
+                    },
+                    {
+                        title: "Unit 1.5: Sam'un (سَمِيعًا) — Mendengar",
+                        desc: "Wajib sifat Sam'un (Maha Mendengar), mustahil sifat Summun (Pekak).",
+                        fakta: "Sam'un ertinya keadaan Allah SWT Maha Mendengar segala ucapan, rintihan dan doa makhluk-Nya tanpa memerlukan alat pendengaran. Dalil: Surah Al-Mujadilah ayat 1."
+                    },
+                    {
+                        title: "Unit 1.6: Basar (بَصِيرًا) — Melihat",
+                        desc: "Wajib sifat Basar (Maha Melihat), mustahil sifat 'Umyun (Buta).",
+                        fakta: "Basar ertinya keadaan Allah SWT Maha Melihat segala perbuatan makhluk, sama ada terang-terangan di siang hari atau tersembunyi di dalam gelap gelita. Dalil: Surah Toha ayat 35."
+                    },
+                    {
+                        title: "Unit 1.7: Kalam (مُتَكَلِّمًا) — Berkata-kata",
+                        desc: "Wajib sifat Kalam (Berkata-kata), mustahil sifat Bukmun (Bisu).",
+                        fakta: "Kalam ertinya keadaan Allah SWT berkata-kata tanpa menggunakan huruf dan suara seperti pertuturan makhluk. Al-Quran adalah kalamullah. Dalil: Surah Al-Baqarah ayat 253."
+                    },
+                    {
+                        title: "Unit 2: Sifat Harus Bagi Allah",
+                        desc: "Hukum sifat harus bagi Allah SWT dan huraian contoh penciptaan alam.",
+                        fakta: "Harus bagi Allah SWT untuk menjadikan sesuatu perkara atau tidak menjadikannya (contoh: menjadikan alam semesta, manusia, haiwan, tumbuhan, serta memberi rezeki atau kesusahan). Hukum mempercayainya adalah wajib."
+                    }
+                ]
+            },
+            {
+                pelajaran: "Pelajaran 2: Sifat Wajib, Mustahil & Harus Bagi Para Rasul",
+                badge: "Pelajaran 2",
+                units: [
+                    {
+                        title: "Unit 1: Sifat Wajib Bagi Para Rasul",
+                        desc: "Empat sifat wajib bagi para rasul: Al-Sidq, Al-Amanah, Al-Tabligh, Al-Fatonah.",
+                        fakta: "Para rasul adalah manusia pilihan Allah yang maksum (terpelihara daripada dosa). Empat sifat wajib mereka ialah Al-Sidq (Benar), Al-Amanah (Amanah), Al-Tabligh (Menyampaikan), dan Al-Fatonah (Bijaksana)."
+                    },
+                    {
+                        title: "Unit 1.1: Al-Sidq (الصدق) — Benar",
+                        desc: "Para rasul sentiasa benar dalam perkataan dan perbuatan. Mustahil berdusta.",
+                        fakta: "Al-Sidq bermaksud para rasul sentiasa benar dan mustahil berdusta dalam menyampaikan risalah Allah SWT. Nabi Muhammad SAW menyampaikan berita tentang peristiwa Israk dan Mikraj dengan benar walaupun sebahagian orang mendustakannya."
+                    },
+                    {
+                        title: "Unit 1.2: Al-Amanah (الأمانة) — Amanah",
+                        desc: "Para rasul sentiasa menjaga amanah dan terhindar daripada khianat.",
+                        fakta: "Al-Amanah bermaksud para rasul sentiasa memelihara amanah dan mustahil mengkhianati tugas kerasulan. Nabi Muhammad SAW terkenal dengan sifat jujur dan amanah sehingga dikenali dengan gelaran Al-Amin (yang dipercayai). Ketika berusia sekitar 25 tahun, baginda menjalankan urusan perdagangan ke Syam bagi pihak Khadijah binti Khuwailid, ditemani Maisarah menurut riwayat sirah yang masyhur."
+                    },
+                    {
+                        title: "Unit 1.3: Al-Tabligh (التبليغ) — Menyampaikan",
+                        desc: "Para rasul menyampaikan semua wahyu Allah kepada umat tanpa menyembunyikan apa pun.",
+                        fakta: "Al-Tabligh bermaksud para rasul menyampaikan semua wahyu yang diperintahkan Allah SWT kepada umat mereka tanpa menyembunyikannya. Nabi Muhammad SAW menerima wahyu pertama, Surah al-‘Alaq ayat 1–5, di Gua Hira’ ketika berusia 40 tahun. Kemudian, Surah al-Muddaththir memerintahkan baginda bangun dan memberikan peringatan."
+                    },
+                    {
+                        title: "Unit 1.4: Al-Fatonah (الفطانة) — Bijaksana",
+                        desc: "Para rasul mempunyai kebijaksanaan yang tinggi dalam mentadbir dan berdakwah.",
+                        fakta: "Al-Fatanah bermaksud para rasul mempunyai kebijaksanaan yang tinggi. Sebelum dilantik menjadi rasul, Nabi Muhammad SAW menyelesaikan pertikaian antara kabilah Quraisy tentang peletakan Hajar Aswad dengan cara yang bijaksana. Baginda meletakkan Hajar Aswad di atas sehelai kain dan meminta wakil kabilah mengangkatnya bersama-sama sebelum baginda meletakkannya di tempat asal."
+                    },
+                    {
+                        title: "Unit 2: Sifat Mustahil Bagi Para Rasul",
+                        desc: "Empat sifat mustahil bagi para rasul: Al-Kizb, Al-Khianat, Al-Kitman, Al-Baladah.",
+                        fakta: "1. Al-Kizb (Dusta), 2. Al-Khianat (Khianat), 3. Al-Kitman (Menyembunyikan wahyu), 4. Al-Baladah (Bodoh)."
+                    },
+                    {
+                        title: "Unit 3: Sifat Harus Bagi Para Rasul",
+                        desc: "Sifat kemanusiaan biasa yang harus bagi para rasul.",
+                        fakta: "Sifat harus bagi para rasul ialah sifat kemanusiaan biasa yang tidak menjejaskan kemuliaan dan tugas kerasulan mereka, seperti makan, minum, tidur, sakit dan berkahwin. Sifat-sifat ini tidak mengurangkan kedudukan mereka sebagai utusan pilihan Allah SWT."
+                    }
+                ]
+            },
+            {
+                pelajaran: "Pelajaran 3: Beriman Kepada Hari Kiamat",
+                badge: "Pelajaran 3",
+                units: [
+                    {
+                        title: "Unit 1: Pengertian Hari Kiamat & Dalilnya",
+                        desc: "Hari kebangkitan semula makhluk di akhirat selepas kehancuran alam dunia.",
+                        fakta: "Hari Kiamat ialah hari berakhirnya kehidupan dunia dan bermulanya kehidupan akhirat. Dengan perintah Allah SWT, sangkakala ditiup dan manusia dibangkitkan semula daripada kematian. Mereka kemudian dihimpunkan untuk menghadapi pengadilan dan perhitungan amalan. Dalil: Surah Yasin, ayat 51–54."
+                    },
+                    {
+                        title: "Unit 2: Nama-nama Hari Kiamat",
+                        desc: "Nama lain bagi Hari Kiamat mengikut Al-Quran dan huraiannya.",
+                        fakta: "1. Yaumul Akhirah (Hari Akhirat), 2. Yaumul Ba'th (Hari Kebangkitan), 3. Yaumul Hasyr (Hari Perhimpunan di Padang Mahsyar), 4. Yaumul Hisab (Hari Perhitungan Amalan), 5. Yaumul Din (Hari Pembalasan atau pengadilan)."
+                    }
+                ]
+            }
+        ];
+
+        const flashcardData = {
+            1: [
+                { q: "Berapakah jumlah sifat wajib bagi Allah SWT?", a: "20 Sifat Wajib", bahg: "Sifat Allah" },
+                { q: "Apakah ertinya sifat Qudrat bagi Allah SWT?", a: "Keadaan Allah SWT Yang Maha Berkuasa melakukan sesuatu.", bahg: "Unit 1.1" },
+                { q: "Apakah lawan bagi sifat Qudrat bagi Allah?", a: "'Ajzun (Maha Lemah)", bahg: "Unit 1.1" },
+                { q: "Apakah maksud sifat Iradah bagi Allah?", a: "Keadaan Allah SWT yang berkehendak dan menentukan sesuatu.", bahg: "Unit 1.2" },
+                { q: "Apakah sifat mustahil bagi sifat Ilmun?", a: "Jahalan (Bodoh / Tidak Mengetahui)", bahg: "Unit 1.3" },
+                { q: "Apakah erti sifat Hayat bagi Allah SWT?", a: "Keadaan Allah SWT Yang Hidup kekal selama-lamanya.", bahg: "Unit 1.4" },
+                { q: "Apakah sifat mustahil bagi Sam'un?", a: "Summun (Pekak)", bahg: "Unit 1.5" },
+                { q: "Apakah erti sifat Basar bagi Allah?", a: "Keadaan Allah SWT Yang Maha Melihat.", bahg: "Unit 1.6" },
+                { q: "Apakah erti sifat Kalam bagi Allah?", a: "Keadaan Allah SWT Yang Berkata-kata.", bahg: "Unit 1.7" },
+                { q: "Apakah hukum mempercayai sifat harus bagi Allah?", a: "Wajib bagi setiap orang Islam", bahg: "Unit 2" }
+            ],
+            2: [
+                { q: "Berapakah jumlah sifat wajib bagi para rasul?", a: "4 Sifat Wajib (Sidq, Amanah, Tabligh, Fatonah)", bahg: "Sifat Rasul" },
+                { q: "Apakah erti sifat Al-Sidq bagi rasul?", a: "Benar", bahg: "Unit 1.1" },
+                { q: "Apakah gelaran yang diberikan kepada Nabi Muhammad kerana amanah?", a: "Al-Amin (Yang Terpercaya)", bahg: "Unit 1.2" },
+                { q: "Apakah erti sifat Al-Tabligh?", a: "Menyampaikan (wahyu Allah)", bahg: "Unit 1.3" },
+                { q: "Apakah erti sifat Al-Fatonah?", a: "Bijaksana", bahg: "Unit 1.4" },
+                { q: "Apakah sifat mustahil yang berlawanan dengan Al-Sidq?", a: "Al-Kizb (Dusta)", bahg: "Unit 2" },
+                { q: "Apakah erti sifat mustahil Al-Khianah?", a: "Khianat", bahg: "Unit 2" },
+                { q: "Apakah erti sifat mustahil Al-Kitman?", a: "Menyembunyikan (wahyu)", bahg: "Unit 2" },
+                { q: "Apakah erti sifat mustahil Al-Baladah?", a: "Bodoh", bahg: "Unit 2" },
+                { q: "Berikan 2 contoh sifat harus bagi para rasul.", a: "Makan, minum, tidur dan berkahwin", bahg: "Unit 3" }
+            ],
+            3: [
+                { q: "Apakah pengertian Hari Kiamat?", a: "Hari kebangkitan semula makhluk di akhirat selepas kehancuran alam.", bahg: "Unit 1" },
+                { q: "Apakah nama hari kiamat yang bermaksud 'Hari Akhirat'?", a: "Yaumul Akhirah", bahg: "Unit 2" },
+                { q: "Apakah maksud Yaumul Ba'th?", a: "Hari Kebangkitan", bahg: "Unit 2" },
+                { q: "Apakah maksud Yaumul Hasyr?", a: "Hari Perhimpunan (di Padang Mahsyar)", bahg: "Unit 2" },
+                { q: "Di manakah manusia dihimpunkan selepas bangkit dari kubur?", a: "Padang Mahsyar", bahg: "Unit 1" },
+                { q: "Apakah nama hari kiamat yang bermaksud 'Hari Perhitungan'?", a: "Yaumul Hisab", bahg: "Unit 2" },
+                { q: "Apakah maksud Yaumul Din?", a: "Hari Pembalasan", bahg: "Unit 2" },
+                { q: "Apakah surah yang sering menjadi dalil utama tentang Kiamat?", a: "Surah Yasin (Ayat 51-54)", bahg: "Unit 1" },
+                { q: "Bagaimanakah keadaan orang beriman pada Hari Kiamat?", a: "Dalam keadaan baik, tenang, gembira dan selamat.", bahg: "Unit 1" },
+                { q: "Bagaimanakah keadaan orang kafir dan munafik pada Hari Kiamat?", a: "Dalam keadaan resah, gelisah dan penderitaan.", bahg: "Unit 1" }
+            ]
+        };
+
+        const quizBank = {
+            1: [
+                { q: "Berapakah jumlah sifat wajib bagi Allah SWT yang wajib diketahui?", options: ["10 sifat", "20 sifat", "40 sifat", "50 sifat"], answer: 1, explanation: "Allah SWT mempunyai 20 sifat wajib yang menunjukkan kesempurnaan zat dan perbuatan-Nya." },
+                { q: "Apakah erti bagi sifat wajib Allah 'Qudrat'?", options: ["Maha Mendengar", "Maha Berkuasa", "Maha Mengetahui", "Maha Hidup"], answer: 1, explanation: "Qudrat bererti keadaan Allah SWT Yang Maha Berkuasa melakukan sesuatu tanpa memerlukan bantuan." },
+                { q: "Apakah sifat mustahil bagi Allah yang berlawanan dengan sifat Qudrat?", options: ["'Ajzun (Lemah)", "Karahah (Terpaksa)", "Jahalan (Bodoh)", "Mautan (Mati)"], answer: 0, explanation: "Sifat mustahil bagi Qudrat ialah 'Ajzun yang bererti lemah." },
+                { q: "Apakah erti bagi sifat wajib Allah 'Iradah'?", options: ["Berkehendak", "Melihat", "Mendengar", "Berkata-kata"], answer: 0, explanation: "Iradah ertinya keadaan Allah SWT berkehendak dan menentukan segala sesuatu." },
+                { q: "Apakah sifat mustahil bagi Iradah?", options: ["Karahah (Terpaksa)", "'Ajzun (Lemah)", "Summun (Pekak)", "Bukmun (Bisu)"], answer: 0, explanation: "Sifat mustahil bagi Iradah ialah Karahah ertinya terpaksa atau tiada kehendak." },
+                { q: "Apakah erti sifat wajib Allah 'Ilmun'?", options: ["Mengetahui", "Hidup", "Melihat", "Berkuasa"], answer: 0, explanation: "Ilmun ertinya keadaan Allah SWT Maha Mengetahui segala rahsia di langit dan di bumi." },
+                { q: "Apakah sifat mustahil bagi sifat Ilmun?", options: ["Jahalan (Bodoh)", "'Umyun (Buta)", "Mautan (Mati)", "Bukmun (Bisu)"], answer: 0, explanation: "Sifat mustahil bagi Ilmun ialah Jahalan yang bermaksud tidak mengetahui atau bodoh." },
+                { q: "Apakah erti sifat wajib Allah 'Hayat'?", options: ["Hidup", "Mendengar", "Melihat", "Berkehendak"], answer: 0, explanation: "Hayat ertinya keadaan Allah SWT Yang Hidup kekal selama-lamanya." },
+                { q: "Apakah sifat mustahil bagi sifat Hayat?", options: ["Mautan (Mati)", "Summun (Pekak)", "'Umyun (Buta)", "Karahah (Terpaksa)"], answer: 0, explanation: "Sifat mustahil bagi Hayat ialah Mautan yang bermaksud mati." },
+                { q: "Apakah erti sifat wajib Allah 'Sam'un'?", options: ["Mendengar", "Melihat", "Berkata-kata", "Mengetahui"], answer: 0, explanation: "Sam'un ertinya keadaan Allah SWT Maha Mendengar segala suara dan ucapan." },
+                { q: "Apakah sifat mustahil bagi sifat Sam'un?", options: ["Summun (Pekak)", "Bukmun (Bisu)", "'Umyun (Buta)", "Jahalan (Bodoh)"], answer: 0, explanation: "Sifat mustahil bagi Sam'un ialah Summun yang bermaksud pekak." },
+                { q: "Apakah erti sifat wajib Allah 'Basar'?", options: ["Melihat", "Mendengar", "Hidup", "Berkuasa"], answer: 0, explanation: "Basar ertinya keadaan Allah SWT Maha Melihat segala sesuatu yang nyata atau tersembunyi." },
+                { q: "Apakah sifat mustahil bagi sifat Basar?", options: ["'Umyun (Buta)", "Summun (Pekak)", "Mautan (Mati)", "'Ajzun (Lemah)"], answer: 0, explanation: "'Umyun adalah sifat mustahil bagi Basar yang bermaksud buta." },
+                { q: "Apakah erti sifat wajib Allah 'Kalam'?", options: ["Berkata-kata", "Mengetahui", "Berkehendak", "Mendengar"], answer: 0, explanation: "Kalam ertinya keadaan Allah SWT berkata-kata tanpa memerlukan huruf dan suara." },
+                { q: "Apakah sifat mustahil bagi sifat Kalam?", options: ["Bukmun (Bisu)", "Summun (Pekak)", "Jahalan (Bodoh)", "Karahah (Terpaksa)"], answer: 0, explanation: "Bukmun adalah sifat mustahil bagi Kalam yang bermaksud bisu." },
+                { q: "Apakah hukum mempercayai sifat harus bagi Allah SWT?", options: ["Wajib", "Sunat", "Haram", "Makruh"], answer: 0, explanation: "Hukum mempercayai sifat harus bagi Allah SWT adalah wajib bagi setiap umat Islam." },
+                { q: "Berikan contoh sifat harus bagi Allah SWT.", options: ["Menjadikan alam semesta", "Mesti menyeksa manusia", "Terpaksa mendengar", "Mengantuk dan tidur"], answer: 0, explanation: "Allah berkuasa menjadikan sesuatu atau tidak menjadikannya mengikut kebijaksanaan-Nya." },
+                { q: "Surah manakah yang sering dijadikan dalil bagi sifat Qudrat Allah?", options: ["Surah Al-An'am ayat 37", "Surah Al-Fatihah", "Surah Al-Ikhlas", "Surah An-Nas"], answer: 0, explanation: "Surah Al-An'am ayat 37 menegaskan bahawa sesungguhnya Allah Maha Berkuasa ke atas tiap-tiap sesuatu." },
+                { q: "Adakah Allah SWT memerlukan sebarang bantuan untuk mentadbir alam?", options: ["Tidak memerlukan sebarang bantuan", "Ya, memerlukan malaikat", "Ya, dibantu para nabi", "Bergantung pada makhluk"], answer: 0, explanation: "Allah SWT Maha Berkuasa dan tidak memerlukan sebarang bantuan daripada makhluk." },
+                { q: "Apakah hukum menyamakan sifat Allah dengan sifat manusia?", options: ["Kufur", "Harus", "Sunat", "Makruh"], answer: 0, explanation: "Menyamakan sifat Allah dengan sifat makhluk/manusia adalah haram dan hukumnya kufur." },
+                { q: "Bagaimanakah sifat kalam Allah berbanding manusia?", options: ["Allah berkata-kata tanpa huruf dan suara", "Allah bersuara merdu", "Allah menulis di atas kertas", "Allah berbahasa Arab"], answer: 0, explanation: "Kalam Allah tidak serupa dengan pertuturan manusia yang menggunakan lidah, bibir dan suara." },
+                { q: "Apakah sifat Allah yang bermaksud Allah tidak berpermulaan?", options: ["Qidam", "Baqa'", "Mukhalafah", "Qiyamuhu"], answer: 0, explanation: "Qidam adalah salah satu daripada sifat 20 Wajib bagi Allah (Sifat Salbiah)." },
+                { q: "Apakah erti sifat Baqa' bagi Allah?", options: ["Kekal selama-lamanya", "Maha Mendengar", "Maha Melihat", "Maha Hidup"], answer: 0, explanation: "Baqa' bererti kekal dan tidak akan binasa." },
+                { q: "Apakah erti Mukhalafah lil Hawadith?", options: ["Berbeza dengan segala makhluk", "Berdiri dengan sendiri", "Maha Esa", "Maha Berkuasa"], answer: 0, explanation: "Mukhalafah lil Hawadith bermaksud Allah tidak menyerupai sebarang makhluk." },
+                { q: "Apakah erti Qiyamuhu Binafsih?", options: ["Berdiri dengan sendiri tanpa bantuan", "Maha Esa", "Maha Berkuasa", "Kekal abadi"], answer: 0, explanation: "Qiyamuhu Binafsih bererti Allah berdiri dengan sendiri tanpa memerlukan tempat atau penasihat." },
+                { q: "Berapakah jumlah pembahagian sifat wajib bagi Allah secara keseluruhan?", options: ["20 Sifat", "4 Sifat", "10 Sifat", "50 Sifat"], answer: 0, explanation: "Secara terperinci, sifat wajib bagi Allah yang wajib dihafaz ialah 20 sifat." },
+                { q: "Adakah sifat Allah bersifat baharu seperti manusia?", options: ["Tidak, Allah bersifat qadim (sedia ada)", "Ya, Allah baharu", "Kadangkala baharu", "Mengikut masa"], answer: 0, explanation: "Allah bersifat Qadim dan Baqa', tidak baharu dan tidak akan binasa." },
+                { q: "Apakah akibat jika seseorang menolak sifat wajib Allah?", options: ["Menjejaskan akidah dan keimanan", "Diberi pahala", "Tiada apa-apa", "Mendapat pujian"], answer: 0, explanation: "Menolak sifat wajib Allah boleh membatalkan akidah seseorang Muslim." },
+                { q: "Manakah antara berikut BUKAN sifat wajib bagi Allah?", options: ["Mautan (Mati)", "Qudrat (Berkuasa)", "Ilmun (Mengetahui)", "Hayat (Hidup)"], answer: 0, explanation: "Mautan adalah sifat mustahil, bukannya sifat wajib." },
+                { q: "Apakah kepentingan mempelajari Sifat 20 bagi murid Tahun 4?", options: ["Mengenal Allah dengan lebih yakin dan mantap akidah", "Untuk peperiksaan semata-mata", "Menghafal perkataan sukar", "Mengisi masa lapang"], answer: 0, explanation: "Tujuan utama adalah memantapkan keimanan dan pengenalan sebenar kepada Pencipta." }
+            ],
+            2: [
+                { q: "Berapakah jumlah sifat wajib bagi para rasul?", options: ["4 sifat", "20 sifat", "10 sifat", "5 sifat"], answer: 0, explanation: "Empat sifat wajib bagi rasul ialah Sidq, Amanah, Tabligh, dan Fatonah." },
+                { q: "Apakah erti bagi sifat wajib rasul 'Al-Sidq'?", options: ["Benar", "Amanah", "Menyampaikan", "Bijaksana"], answer: 0, explanation: "Al-Sidq bererti benar pada perkataan dan perbuatan." },
+                { q: "Apakah erti sifat wajib rasul 'Al-Amanah'?", options: ["Amanah / Jujur", "Benar", "Bijaksana", "Menyampaikan"], answer: 0, explanation: "Al-Amanah bermaksud sentiasa menunaikan janji dan menjaga kepercayaan." },
+                { q: "Apakah erti sifat wajib rasul 'Al-Tabligh'?", options: ["Menyampaikan wahyu", "Benar", "Bijaksana", "Amanah"], answer: 0, explanation: "Al-Tabligh bererti menyampaikan semua perintah Allah kepada umat." },
+                { q: "Apakah erti sifat wajib rasul 'Al-Fatonah'?", options: ["Bijaksana", "Amanah", "Benar", "Menyampaikan"], answer: 0, explanation: "Al-Fatonah bermaksud mempunyai kebijaksanaan yang tinggi." },
+                { q: "Apakah sifat mustahil bagi rasul yang berlawanan dengan Al-Sidq?", options: ["Al-Kizb (Dusta)", "Al-Khianah (Khianat)", "Al-Kitman (Menyembunyikan)", "Al-Baladah (Bodoh)"], answer: 0, explanation: "Al-Kizb adalah sifat mustahil bagi rasul yang bermaksud berdusta." },
+                { q: "Apakah sifat mustahil yang berlawanan dengan Al-Amanah?", options: ["Al-Khianah (Khianat)", "Al-Kizb (Dusta)", "Al-Baladah (Bodoh)", "Al-Kitman (Menyembunyikan)"], answer: 0, explanation: "Al-Khianah bermaksud khianat dan mustahil bagi para rasul." },
+                { q: "Apakah erti sifat mustahil 'Al-Kitman'?", options: ["Menyembunyikan wahyu", "Dusta", "Bodoh", "Khianat"], answer: 0, explanation: "Al-Kitman bermaksud menyembunyikan perkara yang diperintahkan Allah untuk disampaikan." },
+                { q: "Apakah erti sifat mustahil bagi rasul 'Al-Baladah'?", options: ["Bodoh", "Dusta", "Khianat", "Lupa"], answer: 0, explanation: "Al-Baladah bermaksud bodoh atau bebal, yang mustahil bagi para rasul yang cerdik." },
+                { q: "Apakah gelaran Nabi Muhammad SAW kerana sifat amanahnya semasa berniaga?", options: ["Al-Amin", "As-Siddiq", "Al-Faruq", "Zun Nurain"], answer: 0, explanation: "Baginda digelar Al-Amin (Yang Terpercaya) oleh penduduk Makkah." },
+                { q: "Adakah para rasul pernah melakukan dosa besar?", options: ["Tidak, para rasul maksum (terpelihara daripada dosa)", "Ya, kadangkala", "Pernah sebelum dilantik rasul", "Bergantung pada keadaan"], answer: 0, explanation: "Para rasul bersifat maksum iaitu terpelihara daripada sebarang dosa besar mahupun kecil." },
+                { q: "Apakah sifat harus bagi para rasul?", options: ["Bersifat seperti manusia biasa (makan, minum, tidur)", "Tidak perlu makan dan minum", "Hidup selamanya di dunia", "Menjelma sebagai malaikat"], answer: 0, explanation: "Rasul harus bersifat kemanusiaan seperti makan, minum, tidur dan berkahwin tanpa mengurangkan darjat rasul." },
+                { q: "Peristiwa apakah yang membuktikan kejujuran dan kebenaran Nabi Muhammad SAW?", options: ["Israk dan Mikraj", "Perang Badar", "Perjanjian Hudaibiyah", "Hijrah ke Madinah"], answer: 0, explanation: "Peristiwa Israk dan Mikraj menguji keimanan umat manakala Abu Bakar membenarkannya segera (As-Siddiq)." },
+                { q: "Berapakah umur Nabi Muhammad SAW ketika mula berniaga barangan Siti Khadijah ke Syam?", options: ["25 tahun", "40 tahun", "12 tahun", "63 tahun"], answer: 0, explanation: "Baginda menguruskan niaga Siti Khadijah ketika berusia 25 tahun." },
+                { q: "Siapakah nama lelaki yang menemani baginda berniaga ke Syam?", options: ["Maisarah (pembantu Siti Khadijah)", "Abu Bakar", "Ali bin Abi Talib", "Umar bin Al-Khattab"], answer: 0, explanation: "Maisarah melaporkan keperibadian mulia baginda yang sangat jujur." },
+                { q: "Berapakah umur baginda ketika menerima wahyu pertama di Gua Hira'?", options: ["40 tahun", "25 tahun", "30 tahun", "50 tahun"], answer: 0, explanation: "Baginda dilantik menjadi rasul ketika berusia 40 tahun." },
+                { q: "Surah apakah yang diturunkan kali pertama kepada Nabi Muhammad SAW?", options: ["Surah Al-Alaq (Ayat 1-5)", "Surah Al-Fatihah", "Surah Yasin", "Surah Al-Muddathir"], answer: 0, explanation: "Wahyu pertama ialah Surah Al-Alaq ayat 1-5 melalui Malaikat Jibril." },
+                { q: "Apakah surah yang diturunkan selepas Surah Al-Alaq apabila wahyu bersambung?", options: ["Surah Al-Muddathir (Ayat 1-5)", "Surah Al-Baqarah", "Surah An-Nas", "Surah Al-Ikhlas"], answer: 0, explanation: "Surah Al-Muddathir ayat 1-5 adalah wahyu kedua yang memerintahkan baginda berdakwah." },
+                { q: "Bagaimanakah sifat pertuturan para rasul dalam menyampaikan ajaran?", options: ["Sentiasa benar sama ada bergurau atau serius", "Boleh berbohong demi kebaikan", "Hanya bercakap apabila perlu", "Bercakap mengikut suka hati"], answer: 0, explanation: "Para rasul wajib berkata benar dan tidak pernah berdusta walau dalam apa jua keadaan." },
+                { q: "Apakah akibat jika seseorang pengikut meniru sifat dusta?", options: ["Menyerupai sifat munafik dan tercela", "Dipuji kawan", "Mendapat kejayaan", "Disayangi guru"], answer: 0, explanation: "Dusta adalah tanda sifat munafik yang dilarang keras dalam Islam." },
+                { q: "Apakah erti sifat 'Al-Kizb'?", options: ["Dusta / Berbohong", "Khianat", "Bodoh", "Menyembunyikan"], answer: 0, explanation: "Al-Kizb bermaksud dusta dan merupakan sifat mustahil bagi rasul." },
+                { q: "Manakah antara berikut BUKAN sifat mustahil bagi rasul?", options: ["Al-Amanah", "Al-Kizb", "Al-Khianat", "Al-Baladah"], answer: 0, explanation: "Al-Amanah adalah sifat wajib, bukannya sifat mustahil." },
+                { q: "Apakah peranan sifat Fatonah bagi seorang rasul?", options: ["Menyelesaikan masalah masyarakat dengan bijaksana", "Menipu musuh Islam", "Berniaga mencari keuntungan", "Menjaga harta sendiri"], answer: 0, explanation: "Fatonah membantu rasul berhujah dan memimpin umat dengan hikmah." },
+                { q: "Semasa perletakan Hajar Aswad, bagaimana Nabi menyelesaikan pergaduhan kabilah?", options: ["Baginda membentangkan kain dan meminta wakil kabilah mengangkat bersama", "Baginda menyembunyikan batu tersebut", "Baginda melantik raja Makkah", "Baginda membiarkan mereka berperang"], answer: 0, explanation: "Ini menunjukkan kebijaksanaan (Fatonah) luar biasa baginda." },
+                { q: "Adakah para rasul mengantuk atau sakit seperti manusia?", options: ["Ya, kerana itu sifat harus bagi rasul", "Tidak pernah sakit", "Hanya nabi tertentu sahaja", "Hanya selepas umur 50 tahun"], answer: 0, explanation: "Sifat harus rasul merangkumi kesakitan ringan dan keletihan manusia biasa." },
+                { q: "Apakah kewajipan kita terhadap para rasul?", options: ["Beriman dengan sebenar-benarnya dan mengikut sunnah", "Hanya mengetahui nama mereka", "Memuja mereka seperti Tuhan", "Mengabaikan sirah mereka"], answer: 0, explanation: "Umat Islam wajib beriman kepada semua rasul dan mengamalkan ajaran mereka." },
+                { q: "Apakah erti 'Maksum' bagi para rasul?", options: ["Terpelihara daripada dosa dan maksiat", "Kebal daripada senjata", "Kaya raya", "Sentiasa berpuasa"], answer: 0, explanation: "Maksum bererti Allah menjaga para rasul daripada melakukan sebarang dosa." },
+                { q: "Mengapa para rasul dipilih daripada kalangan manusia, bukan malaikat?", options: ["Agar mudah menjadi contoh teladan kepada manusia", "Kerana malaikat sibuk", "Kerana manusia lebih kuat", "Malaikat tidak mahu"], answer: 0, explanation: "Rasul dari kalangan manusia memudahkan komunikasi dan ikutan praktikal." },
+                { q: "Apakah sifat orang munafik apabila dia berjanji?", options: ["Mungkiri / Menipu", "Menepati", "Gembira", "Takut"], answer: 0, explanation: "Tanda munafik ialah apabila bercakap berbohong, berjanji mungkir dan diberi amanah khianat." },
+                { q: "Apakah tujuan utama Allah mengutuskan para rasul?", options: ["Menyampaikan petunjuk tauhid dan kebenaran kepada manusia", "Mengumpul harta dunia", "Menjadi pemerintah negara", "Menunjuk kehebatan"], answer: 0, explanation: "Matlamat utama rasul adalah mengajak manusia menyembah Allah Yang Maha Esa." }
+            ],
+            3: [
+                { q: "Apakah pengertian Hari Kiamat?", options: ["Hari kehancuran alam dan kebangkitan semula makhluk di akhirat", "Hari cuti umum di dunia", "Hari pertukaran musim", "Hari lahir manusia"], answer: 0, explanation: "Hari Kiamat ialah hari kemusnahan alam semesta diikuti kebangkitan semula untuk dihisab." },
+                { q: "Apakah nama lain bagi Hari Kiamat yang bermaksud 'Hari Akhirat'?", options: ["Yaumul Akhirah", "Yaumul Ba'th", "Yaumul Hasyr", "Yaumul Hisab"], answer: 0, explanation: "Yaumul Akhirah bererti hari akhirat." },
+                { q: "Apakah maksud 'Yaumul Ba'th'?", options: ["Hari Kebangkitan (diarahkan bangkit dari kubur)", "Hari Perhimpunan", "Hari Perhitungan", "Hari Pembalasan"], answer: 0, explanation: "Yaumul Ba'th bermaksud hari kebangkitan." },
+                { q: "Apakah maksud 'Yaumul Hasyr'?", options: ["Hari Perhimpunan di Padang Mahsyar", "Hari Perhitungan amalan", "Hari Pembalasan syurga neraka", "Hari kehancuran langit"], answer: 0, explanation: "Yaumul Hasyr bererti hari dihimpunkan semua manusia di Padang Mahsyar." },
+                { q: "Di manakah tempat manusia dihisab amalan mereka?", options: ["Padang Mahsyar", "Syurga", "Neraka", "Bumi Makkah"], answer: 0, explanation: "Padang Mahsyar adalah tempat perhimpunan dan perbicaraan agung." },
+                { q: "Apakah maksud 'Yaumul Hisab'?", options: ["Hari Perhitungan segala amal perbuatan", "Hari Pembalasan", "Hari Kebangkitan", "Hari Kematian"], answer: 0, explanation: "Yaumul Hisab bermaksud hari dihitung amalan baik dan buruk." },
+                { q: "Apakah maksud 'Yaumul Din'?", options: ["Hari Pembalasan (diberi syurga atau neraka)", "Hari Perhimpunan", "Hari Dunia Kiamat", "Hari Manusia Tidur"], answer: 0, explanation: "Yaumul Din bermaksud hari pembalasan mutlak." },
+                { q: "Surah apakah yang sering dirujuk untuk dalil Kiamat dalam silibus?", options: ["Surah Yasin (Ayat 51-54)", "Surah Al-Baqarah", "Surah Al-Kahfi", "Surah An-Nur"], answer: 0, explanation: "Surah Yasin ayat 51-54 menceritakan manusia bangkit dari kubur menghadap Tuhan." },
+                { q: "Bagaimanakah keadaan orang beriman pada Hari Kiamat?", options: ["Tenang, gembira dan selamat", "Resah dan ketakutan", "Disiksa dengan rantai", "Menjerit kesakitan"], answer: 0, explanation: "Orang beriman mendapat rahmat dan naungan Allah serta selamat." },
+                { q: "Bagaimanakah keadaan orang kafir dan munafik pada Hari Kiamat?", options: ["Resah, gelisah dan menderita", "Tenang gembira", "Masuk syurga serta-merta", "Tidur lena"], answer: 0, explanation: "Golongan derhaka berada dalam ketakutan dan azab yang pedih." },
+                { q: "Apakah hukum beriman kepada Hari Kiamat?", options: ["Wajib (Rukun Iman kelima)", "Sunat", "Fardhu Kifayah", "Harus"], answer: 0, explanation: "Beriman kepada Hari Kiamat adalah Rukun Iman yang kelima." },
+                { q: "Apakah tujuan utama Allah menjadikan Hari Kiamat?", options: ["Menilai amalan manusia dengan seadil-adilnya", "Menghapuskan bumi selamanya", "Menguji kepenatan malaikat", "Menunjukkan kuasa letupan"], answer: 0, explanation: "Kiamat memastikan balasan adil diberikan kepada setiap amal baik dan buruk." },
+                { q: "Apakah tanda-tanda kecil Kiamat?", options: ["Banyak berlaku kemaksiatan dan ilmu agama ditarik", "Matahari terbit dari barat", "Keluar Dajjal", "Turun Nabi Isa"], answer: 0, explanation: "Tanda kecil melibatkan perubahan moral sosial dan masa yang cepat berlalu." },
+                { q: "Antara berikut, yang manakah TANDA BESAR Kiamat?", options: ["Keluar Dajjal dan terbit matahari dari barat", "Banyak bangunan tinggi", "Rasuah berleluasa", "Anak derhaka kepada ibu bapa"], answer: 0, explanation: "Keluar Dajjal dan matahari terbit dari barat adalah tanda besar Kiamat." },
+                { q: "Siapakah yang meniup Sangkakala pada hari Kiamat?", options: ["Malaikat Israfil", "Malaikat Jibril", "Malaikat Mikail", "Malaikat Izrail"], answer: 0, explanation: "Malaikat Israfil dipertanggungjawabkan meniup sangkakala." },
+                { q: "Berapa kalikah sangkakala ditiup secara umumnya dalam peristiwa kiamat?", options: ["Dua kali (tiupan mematikan dan tiupan menghidupkan)", "Sekali sahaja", "Tiga kali", "Empat kali"], answer: 0, explanation: "Tiupan pertama mematikan semua makhluk, tiupan kedua membangkitkan mereka." },
+                { q: "Apakah perasaan orang yang bertaubat apabila mendengar tentang Kiamat?", options: ["Segera memperbanyakkan amal soleh", "Berputus asa", "Tidak peduli", "Marah"], answer: 0, explanation: "Kesedaran tentang kiamat mendorong manusia segera bertaubat dan beramal." },
+                { q: "Apakah balasan bagi orang yang taat kepada perintah Allah di akhirat?", options: ["Syurga yang penuh nikmat", "Neraka jahanam", "Diseksa di padang mahsyar", "Menjadi debu"], answer: 0, explanation: "Orang taat akan ditempatkan di dalam syurga yang kekal abadi." },
+                { q: "Apakah balasan bagi orang yang syirik dan kufur di akhirat?", options: ["Neraka yang kekal", "Syurga sementara", "Dibebaskan serta-merta", "Hidup semula di dunia"], answer: 0, explanation: "Orang kafir dan syirik akan diazab di dalam neraka." },
+                { q: "Apakah amalan harian yang dianjurkan apabila menghadapi kesusahan?", options: ["Mengucapkan Hauqalah (La hawula wala quwwata illa billah)", "Marah-marah", "Putus asa", "Menyalahkan takdir"], answer: 0, explanation: "Hauqalah dibaca ketika menghadapi kesusahan dan bebanan berat." },
+                { q: "Apakah erti 'Mizan' pada hari kiamat?", options: ["Timbangan amalan baik dan buruk", "Jambatan sirat", "Kolam air", "Buku catatan"], answer: 0, explanation: "Mizan ialah alat timbangan keadilan Allah SWT di akhirat." },
+                { q: "Apakah erti 'Sirat'?", options: ["Jambatan yang merentasi neraka menuju ke syurga", "Padang tempat berkumpul", "Kitab rekod", "Timbangan amalan"], answer: 0, explanation: "Sirat adalah titian yang direntangkan di atas neraka." },
+                { q: "Mengapa kita perlu bersedia menghadapi Kiamat?", options: ["Kerana kematian itu pasti dan kiamat rahsia Allah", "Supaya tidak takut mati", "Untuk mengejar harta dunia", "Supaya terkenal"], answer: 0, explanation: "Persiapan dengan amal soleh adalah bekalan terbaik menghadapi hari akhirat." },
+                { q: "Apakah erti 'Amalan Jariah' yang membantu selepas mati?", options: ["Sedekah, ilmu yang dimanfaatkan dan anak soleh", "Harta yang ditinggalkan", "Pangkat besar", "Rumah mewah"], answer: 0, explanation: "Tiga perkara pahala berterusan walaupun selepas meninggal dunia." },
+                { q: "Adakah sesiapa yang tahu tarikh sebenar berlakunya Kiamat?", options: ["Tidak, hanya Allah SWT yang Maha Mengetahui", "Nabi Muhammad SAW tahu", "Malaikat Israfil tahu", "Ahli nujum tahu"], answer: 0, explanation: "Tiada siapa yang tahu bilakah berlakunya Kiamat kecuali Allah SWT." },
+                { q: "Apakah kesan beriman kepada Kiamat terhadap akhlak seseorang?", options: ["Sentiasa berhati-hati dalam perbuatan dan takut berbuat dosa", "Menjadi penakut", "Mengasingkan diri dari masyarakat", "Berasa tamak"], answer: 0, explanation: "Keimanan kepada kiamat membentuk disiplin moral dan akhlak terpuji." },
+                { q: "Apakah yang dimaksudkan dengan 'Yaumul Din'?", options: ["Hari Pembalasan", "Hari Kiamat", "Hari Kebangkitan", "Hari Perhitungan"], answer: 0, explanation: "Yaumul Din sinonim dengan hari pembalasan amal." },
+                { q: "Apakah surah dalam Al-Quran yang menceritakan balasan syurga dan neraka secara terperinci?", options: ["Surah Hud (Ayat 105-108)", "Surah Al-Fatihah", "Surah An-Nas", "Surah Al-Ikhlas"], answer: 0, explanation: "Surah Hud merakamkan keadaan ahli syurga dan ahli neraka." },
+                { q: "Apakah zikir yang dianjurkan untuk memuji kebesaran Allah ketika melihat alam?", options: ["Subhanallah walhamdulillah", "Astaghfirullah", "Innalillah", "La ilaha illallah"], answer: 0, explanation: "Zikir tasbih dan tahmid mengagungkan kekuasaan pencipta." },
+                { q: "Apakah kesimpulan utama beriman kepada Hari Kiamat?", options: ["Hidup di dunia adalah sementara dan akhirat adalah kekal abadi", "Dunia ini selamanya ada", "Tiada balasan selepas mati", "Manusia bebas lakukan apa saja"], answer: 0, explanation: "Kesedaran ini mendidik insan memanfaatkan usia di dunia untuk kebaikan." }
+            ]
+        };
+
+        let currentTab = 'nota';
+        let currentFlashPel = 1;
+        let currentFlashIndex = 0;
+        let isFlashFlipped = false;
+
+        let activeQuizPel = null; 
+        let activeQuizQuestions = [];
+        let currentQuizIndex = 0;
+        let userAnswers = {}; 
+        let quizScore = 0;
+
+        window.onload = function() {
+            renderNotes();
+            updateFlashcard();
+        };
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('view-nota').classList.add('hidden');
+            document.getElementById('view-kad').classList.add('hidden');
+            document.getElementById('view-kuiz').classList.add('hidden');
+
+            document.getElementById('tab-nota-btn').className = 'pb-1 tab-inactive flex items-center gap-2 hover:text-white transition-colors';
+            document.getElementById('tab-kad-btn').className = 'pb-1 tab-inactive flex items-center gap-2 hover:text-white transition-colors';
+            document.getElementById('tab-kuiz-btn').className = 'pb-1 tab-inactive flex items-center gap-2 hover:text-white transition-colors';
+
+            if(tab === 'nota') {
+                document.getElementById('view-nota').classList.remove('hidden');
+                document.getElementById('tab-nota-btn').className = 'pb-1 tab-active flex items-center gap-2 transition-colors';
+            } else if(tab === 'kad') {
+                document.getElementById('view-kad').classList.remove('hidden');
+                document.getElementById('tab-kad-btn').className = 'pb-1 tab-active flex items-center gap-2 transition-colors';
+            } else if(tab === 'kuiz') {
+                document.getElementById('view-kuiz').classList.remove('hidden');
+                document.getElementById('tab-kuiz-btn').className = 'pb-1 tab-active flex items-center gap-2 transition-colors';
+            }
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notes-container');
+            let html = '';
+
+            notesData.forEach((pel, pIdx) => {
+                html += `
+                    <div class="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+                        <div class="emerald-header text-white px-5 py-4 flex justify-between items-center select-none">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-emerald-800 text-emerald-200 text-xs px-2.5 py-1 rounded-lg font-bold">${pel.badge}</span>
+                                <h3 class="text-base sm:text-lg font-bold">${pel.pelajaran}</h3>
+                            </div>
+                            <button onclick="toggleAccordion(${pIdx})" id="acc-btn-${pIdx}" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer">
+                                <span id="acc-btn-text-${pIdx}">Buka Tajuk</span>
+                                <i id="acc-icon-${pIdx}" class="fa-solid fa-chevron-down transition-transform"></i>
+                            </button>
+                        </div>
+                        <div id="acc-content-${pIdx}" class="p-5 space-y-4 bg-slate-50/50 hidden">
+                `;
+
+                pel.units.forEach((unit, uIdx) => {
+                    html += `
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <h4 class="font-bold text-emerald-900 text-sm sm:text-base flex items-center gap-2">
+                                <i class="fa-solid fa-bookmark text-emerald-600 text-xs"></i> ${unit.title}
+                            </h4>
+                            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${unit.desc}</p>
+                            <div class="bg-emerald-50/70 border-l-4 border-emerald-600 p-3 rounded-r-xl text-xs text-emerald-900 mt-2 space-y-1">
+                                <span class="font-bold block text-emerald-950 uppercase tracking-wider text-[10px]">Huraian & Fakta Penting:</span>
+                                <p class="leading-relaxed">${unit.fakta}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleAccordion(pIdx) {
+            const content = document.getElementById(`acc-content-${pIdx}`);
+            const icon = document.getElementById(`acc-icon-${pIdx}`);
+            const btnText = document.getElementById(`acc-btn-text-${pIdx}`);
+
+            if(content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                btnText.innerText = 'Tutup Tajuk';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                btnText.innerText = 'Buka Tajuk';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function changeFlashcardPel(val) {
+            currentFlashPel = parseInt(val);
+            currentFlashIndex = 0;
+            isFlashFlipped = false;
+            document.getElementById('flashcard-container').classList.remove('flipped');
+            updateFlashcard();
+        }
+
+        function updateFlashcard() {
+            const cards = flashcardData[currentFlashPel];
+            const card = cards[currentFlashIndex];
+
+            document.getElementById('flashcard-counter').innerText = `Kad ${currentFlashIndex + 1} daripada ${cards.length}`;
+            document.getElementById('fc-pel-badge').innerText = `Pelajaran ${currentFlashPel}`;
+            document.getElementById('fc-question').innerText = card.q;
+            document.getElementById('fc-bahagian').innerText = card.bahg;
+            document.getElementById('fc-answer').innerText = card.a;
+        }
+
+        function flipFlashcard() {
+            isFlashFlipped = !isFlashFlipped;
+            const container = document.getElementById('flashcard-container');
+            if(isFlashFlipped) {
+                container.classList.add('flipped');
+            } else {
+                container.classList.remove('flipped');
+            }
+        }
+
+        function nextFlashcard() {
+            const cards = flashcardData[currentFlashPel];
+            currentFlashIndex = (currentFlashIndex + 1) % cards.length;
+            isFlashFlipped = false;
+            document.getElementById('flashcard-container').classList.remove('flipped');
+            updateFlashcard();
+        }
+
+        function prevFlashcard() {
+            const cards = flashcardData[currentFlashPel];
+            currentFlashIndex = (currentFlashIndex - 1 + cards.length) % cards.length;
+            isFlashFlipped = false;
+            document.getElementById('flashcard-container').classList.remove('flipped');
+            updateFlashcard();
+        }
+
+        function resetFlashcards() {
+            currentFlashIndex = 0;
+            isFlashFlipped = false;
+            document.getElementById('flashcard-container').classList.remove('flipped');
+            updateFlashcard();
+        }
+
+        function startQuiz(type) {
+            activeQuizPel = type;
+            userAnswers = {};
+            currentQuizIndex = 0;
+
+            if(type === 'mixed') {
+                let combined = [...quizBank[1], ...quizBank[2], ...quizBank[3]];
+                combined.sort(() => Math.random() - 0.5);
+                activeQuizQuestions = combined.slice(0, 30);
+                document.getElementById('quiz-active-title').innerText = "Semua Tajuk Campuran (30 Soalan)";
+            } else {
+                let bank = [...quizBank[type]];
+                bank.sort(() => Math.random() - 0.5);
+                activeQuizQuestions = bank.slice(0, 30);
+                document.getElementById('quiz-active-title').innerText = `Pelajaran ${type} (30 Soalan)`;
+            }
+
+            document.getElementById('quiz-menu').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('hidden');
+
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = activeQuizQuestions[currentQuizIndex];
+            document.getElementById('quiz-question-counter').innerText = `Soalan ${currentQuizIndex + 1} daripada ${activeQuizQuestions.length}`;
+            document.getElementById('quiz-question-text').innerText = q.q;
+
+            let scoreCount = 0;
+            Object.keys(userAnswers).forEach(idx => {
+                if(userAnswers[idx] === activeQuizQuestions[idx].answer) scoreCount++;
+            });
+            document.getElementById('current-score-display').innerText = scoreCount;
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            let optHtml = '';
+            const labels = ['A', 'B', 'C', 'D'];
+            const opts = q.options;
+
+            const alreadyAnswered = userAnswers[currentQuizIndex] !== undefined;
+            const selectedOpt = userAnswers[currentQuizIndex];
+
+            opts.forEach((optText, oIdx) => {
+                let btnStyle = "bg-white hover:bg-slate-50 border-slate-200 text-slate-800";
+                let badgeStyle = "bg-slate-100 text-slate-700";
+
+                if(alreadyAnswered) {
+                    if(oIdx === q.answer) {
+                        btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold shadow-sm";
+                        badgeStyle = "bg-emerald-600 text-white";
+                    } else if(oIdx === selectedOpt && selectedOpt !== q.answer) {
+                        btnStyle = "bg-rose-50 border-rose-500 text-rose-900 font-semibold shadow-sm";
+                        badgeStyle = "bg-rose-600 text-white";
+                    } else {
+                        btnStyle = "bg-slate-50 border-slate-200 text-slate-400 opacity-60";
+                    }
+                }
+
+                optHtml += `
+                    <button onclick="selectQuizOption(${oIdx})" ${alreadyAnswered ? 'disabled' : ''} class="w-full text-left border p-3.5 rounded-xl flex items-center gap-3 transition-all ${btnStyle}">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 ${badgeStyle}">${labels[oIdx]}</span>
+                        <span class="text-sm sm:text-base">${optText}</span>
+                    </button>
+                `;
+            });
+
+            optionsContainer.innerHTML = optHtml;
+
+            const expBox = document.getElementById('quiz-explanation-box');
+            if(alreadyAnswered) {
+                expBox.classList.remove('hidden');
+                const isCorrect = selectedOpt === q.answer;
+                document.getElementById('explanation-icon').className = isCorrect ? "fa-solid fa-circle-check text-emerald-600" : "fa-solid fa-circle-xmark text-rose-600";
+                document.getElementById('explanation-title').innerText = isCorrect ? "Tahniah! Jawapan Anda Betul" : "Jawapan Kurang Tepat";
+                document.getElementById('quiz-explanation-text').innerText = q.explanation;
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            document.getElementById('btn-prev-question').style.visibility = currentQuizIndex === 0 ? 'hidden' : 'visible';
+            document.getElementById('btn-next-question').innerText = currentQuizIndex === activeQuizQuestions.length - 1 ? "Selesai Kuiz" : "Soalan Seterusnya";
+        }
+
+        function selectQuizOption(oIdx) {
+            if(userAnswers[currentQuizIndex] !== undefined) return;
+            userAnswers[currentQuizIndex] = oIdx;
+            renderQuizQuestion();
+        }
+
+        function nextQuizQuestion() {
+            if(currentQuizIndex < activeQuizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function prevQuizQuestion() {
+            if(currentQuizIndex > 0) {
+                currentQuizIndex--;
+                renderQuizQuestion();
+            }
+        }
+
+        function showQuizResults() {
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+
+            let correct = 0;
+            let total = activeQuizQuestions.length;
+
+            Object.keys(userAnswers).forEach(idx => {
+                if(userAnswers[idx] === activeQuizQuestions[idx].answer) correct++;
+            });
+
+            let incorrect = total - correct;
+            let percent = ((correct / total) * 100).toFixed(1);
+
+            document.getElementById('res-score').innerText = `${correct} / ${total}`;
+            document.getElementById('res-percent').innerText = `${percent}%`;
+            document.getElementById('res-correct').innerText = correct;
+            document.getElementById('res-incorrect').innerText = incorrect;
+        }
+
+        function restartCurrentQuiz() {
+            startQuiz(activeQuizPel);
+        }
+
+        function backToQuizMenu() {
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-menu').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
